@@ -1,10 +1,9 @@
 # Check that the Java SDK "jar" tool is available
-$jarCommand = Get-Command "[j]ar.exe"
-if ((-not $jarCommand) -or -not (Test-Path $jarCommand)) 
+$jarCommand = Get-Command 'jar.exe'
+if ((-not $jarCommand) -or -not (Test-Path $jarCommand.Path)) 
 { 
     throw "could not find jar.exe, you need to install the Java SDK or add it to your PATH." 
 }
-
 
 
 function Get-Absolute-Path
@@ -16,8 +15,6 @@ function Get-Absolute-Path
     }
     return ([IO.FileInfo] (Join-Path (Get-Location) $file)).FullName
 }
-
-
 
 
 # Function inspired by http://serverfault.com/questions/313015/trying-to-unzip-a-file-with-powershell
@@ -97,8 +94,6 @@ $compilerZip = Join-Path $compilerDirectory "compiler-latest.zip"
 $compilerJar = Join-Path $compilerDirectory "compiler.jar"
 
 Download-Unzip -Uri $compilerUri -ZipFile $compilerZip -Target $compilerDirectory
-Invoke-RestMethod -Uri $compilerUri -OutFile $compilerZip
-Extract-Zip $compilerZip $compilerDirectory
 
 Write-Host "Cleaning up Google Closure compiler archive..."
 Remove-Item $compilerZip
@@ -121,4 +116,4 @@ Remove-Item $rhinoZip
 
 # --------------------------------------------------------------
 
-Write-Host "[Bootstrap Completed]"
+Write-Host "[Bootstrap Completed]" -ForegroundColor Cyan
